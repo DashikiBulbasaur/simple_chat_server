@@ -1,0 +1,21 @@
+problems:
+1. user ids are posted on the server level, not user level
+  possible fix: put the println on the spawn level. may not even have to
+    make list_of_users arc mutex
+2. when a user posts a message, it should show their user_id + their message.
+  example: 
+    user1000: user's message goes here
+  potential fix: in the second arm of tokio::select, perhaps remove
+    the addr != other_addr condition 
+
+
+changes/possible future updates:
+1. on the server level, it should say `user_id connected`
+2. once the server thing gets going, post pics of the chat server to github
+
+
+notes:
+1. idk if i can fix this, but windows powershell 7 (and maybe
+  other terminals too) has a weird quirk with typing where you can't erase
+  characters. instead, backspace goes back and you can only replace characters.
+  tbqh, this might not even be an issue
