@@ -1,17 +1,20 @@
 problems:
-1. user ids are posted on the server level, not user level
-  possible fix: put the println on the spawn level. may not even have to
-    make list_of_users arc mutex
-2. when a user posts a message, it should show their user_id + their message.
-  example: 
-    user1000: user's message goes here
-  potential fix: in the second arm of tokio::select, perhaps remove
-    the addr != other_addr condition 
+1. it may or may not be worth it to have more robust error handling,
+  i.e., get rid of some unwraps and ?. 
+  potential fix: look into network code error handling
+2. the program has no way to gracefully shutdown once all users
+  disconnect. it may be worth it to rectify this in the future.
 
 
 changes/possible future updates:
-1. on the server level, it should say `user_id connected`
-2. once the server thing gets going, post pics of the chat server to github
+1. fix problems
+2. on the client level, it may or may not be worth it to notify
+  users whenever a new user has connected. downside to this is that it
+  may make the chat server look bloated with messages. i probably won't
+  do this, but i'm still including it here.
+3. i might add some testing in the future
+4. i might add an asterisk right next to the user id on the user's screen
+  to better highlight which messages they sent. 
 
 
 notes:
@@ -19,3 +22,49 @@ notes:
   other terminals too) has a weird quirk with typing where you can't erase
   characters. instead, backspace goes back and you can only replace characters.
   tbqh, this might not even be an issue
+
+2. there is no way to look at the chat backlog if one or more users already
+  started talking in the server and a new one joins. this is because messages 
+  aren't stored, they're just sent. for now, i'm choosing to define this as 
+  a feature. 
+
+  without using a database or something (i could be wrong), i'd have
+  to create a file where messages are stored and each connection would refer
+  to that file. however, i don't wanna do that for several reasons
+
+  a) no need and doing it would be annoying, sorry
+  b) would probably read, delete messages, and add to/from the file
+    multiple times, and i don't wanna subject my ssd/hdd or anyone 
+    else's (whoever clones and runs the repo) to unnecessary
+    read/write actions.
+  c) the program has no graceful shutdown. the program probably needs
+    a way to gracefully shutdown so it knows it needs to wipe the file
+    at the end everytime. even if i find a way to gracefully shutdown
+    the server once all users disconnect, and i change my mind on point a),
+    point b) still exists and i don't wanna do it.
+
+3. on the server level, a user connects even if a connection hasn't opened.
+  for example, upon `cargo run`, a user# immediately connects even though
+  no connection was opened.
+
+  this is because it's one of the first things that happens in the
+  first loop. it can't be moved inside tokio::spawn cuz that has 
+  async move in it and it would own the list_of_users vec, and for the
+  next iteration of the loop, list_of_users is just gone. moving it inside
+  tokio::spawn would ensure that a 'user connects' to the server at the 
+  same time that a connection is opened, but doing that breaks the program.
+
+  this feature is not a problem since
+  a) the number generated in the first loop is the same number for the 
+    user_id for the next connection that opens, and 
+  b) it doesn't affect anything else, just a lil quirk.
+
+  edit: it seems that sometimes the server shows the right amount
+    of users connecting. before it wasn't, now it is, and i'm not sure
+    why.
+
+4. messages sent to the server do include the user_ids so that there's no confusion 
+  and so that's it's more like a real chat, but the original message sent from 
+  the user's end stays there on the user's screen. I'm not too sure how to fix that, 
+  or even if I should. For now, I'm choosing to ignore it since it doesn't 
+  affect much.

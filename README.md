@@ -14,18 +14,41 @@ and enabled on your system.
 
 Clone the project to your system. Go to the project directory using your terminal, type `cargo run`, and open at least two more terminals and type
 `telnet localhost 8080` on them. You should connect to the localhost:8080 server that `cargo run` instantiated, and you can start typing and receiving
-messages.
+messages. 
+
+This program has no graceful shutdown (this may or may not change in the future), so to shut down the server (the following works in powershell, other terminals 
+may have different commands), go to the terminal where you typed `cargo run` and press Ctrl + c. To close particular users, press Ctrl + c and type 'quit'.
+
+# Examples
+
+The first image is the server with `cargo run` and the users connecting in order.
+![server](images\server.png)
+
+The next three images are the users that connected in order and are showing an example conversation in the chat server.
+![first user](images\first_user.png)
+![second user](images\second_user.png)
+![third_user](images\third_user.png)
 
 # Problems that I know of
 
-1. user ids are posted on the server level, not user level.
-2. when a user posts a message, it should show their user_id + their message.
+1. it may or may not be worth it to have more robust error handling,
+  i.e., get rid of some unwraps and ?. 
+  potential fix: look into network code error handling
+2. the program has no way to gracefully shutdown once all users
+  disconnect. it may be worth it to rectify this in the future.
 
 For a list of possible fixes and other notes, please look at problems_changes_notes.txt
 
 # Possible changes/updates
 
-1. on the server level, it should say `user_id connected`.
+1. fix problems
+2. on the client level, it may or may not be worth it to notify
+  users whenever a new user has connected. downside to this is that it
+  may make the chat server look bloated with messages. i probably won't
+  do this, but i'm still including it here.
+3. i might add some testing in the future
+4. i might add an asterisk right next to the user id on the user's screen
+  to better highlight which messages they sent.
 
 # Notes on the project's conception
 
@@ -39,5 +62,4 @@ I looked at several Rust backend web frameworks such as Axum, Actix and Rocket, 
 crate for Rust. Instead of jumping straight to working with the web frameworks, I wanted to gain a deeper understanding of asynchronous programming first so that I'd have
 a good foundation when working with the backend frameworks.
 
-All that to say that I learned a lot about asynchronous programming, and after this project I wanna move on to organically making a simple chat web client that I can host
-on my vscode using port forwarding.
+All that to say that I learned a lot about asynchronous programming, and after this project I wanna move on to organically making a simple chat web client. 
