@@ -25,9 +25,9 @@ The first image is the server with `cargo run` and the users connecting in order
 ![server](images\server.png)
 
 The next three images are the users that connected in order and are showing an example conversation in the chat server.
-![first user](images\first_user.png)
-![second user](images\second_user.png)
-![third_user](images\third_user.png)
+![first user](images/first_user.png)
+![second user](images/second_user.png)
+![third_user](images/third_user.png)
 
 # Problems that I know of
 
