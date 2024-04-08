@@ -48,8 +48,6 @@ For a list of possible fixes and other notes, please look at problems_changes_no
   may make the chat server look bloated with messages. i probably won't
   do this, but i'm still including it here.
 3. i might add some testing in the future
-4. i might add an asterisk right next to the user id on the user's screen
-  to better highlight which messages they sent.
 
 # Notes on the project's conception
 

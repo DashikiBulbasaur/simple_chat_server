@@ -63,6 +63,7 @@ async fn main() -> io::Result<()> {
                 // select which happens first: sending a msg or receiving one
                 tokio::select! {
                     // i think this writes bc of the read_line
+                //
                     // thank u bufreader
                     result = reader.read_line(&mut line) => {
                         if result.unwrap() == 0 {
@@ -76,9 +77,15 @@ async fn main() -> io::Result<()> {
                     }
                     // the part that receives msgs from the network and prints them
                     result = rx.recv() => {
-                        let (msg, _other_addr) = result.unwrap();
+                        let (msg, other_addr) = result.unwrap();
 
-                        writer.write_all(msg.as_bytes()).await.unwrap();
+                        if addr != other_addr {
+                            writer.write_all(msg.as_bytes()).await.unwrap();
+                        } else {
+                            let mut user_sees_their_msg: String = "(you) ".to_owned();
+                            user_sees_their_msg.push_str(&msg);
+                            writer.write_all(user_sees_their_msg.as_bytes()).await.unwrap();
+                        }
                     }
                 }
             }

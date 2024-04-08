@@ -13,8 +13,6 @@ changes/possible future updates:
   may make the chat server look bloated with messages. i probably won't
   do this, but i'm still including it here.
 3. i might add some testing in the future
-4. i might add an asterisk right next to the user id on the user's screen
-  to better highlight which messages they sent. 
 
 
 notes:
@@ -61,7 +59,7 @@ notes:
 
   edit: it seems that sometimes the server shows the right amount
     of users connecting. before it wasn't, now it is, and i'm not sure
-    why.
+    why. still including this 'issue' here for posterity.
 
 4. messages sent to the server do include the user_ids so that there's no confusion 
   and so that's it's more like a real chat, but the original message sent from 
