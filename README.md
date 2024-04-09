@@ -17,7 +17,7 @@ Clone the project to your system. Go to the project directory using your termina
 messages. 
 
 This program has no graceful shutdown (this may or may not change in the future), so to shut down the server (the following works in powershell, other terminals 
-may have different commands), go to the terminal where you typed `cargo run` and press Ctrl + c. To close particular users, press Ctrl + c and type 'quit'.
+may have different commands), go to the terminal where you typed `cargo run` and press ctrl + c. To close particular users, press ctrl + c and type 'quit'.
 
 # Examples
 
@@ -47,7 +47,6 @@ For a list of possible fixes and other notes, please look at problems_changes_no
   users whenever a new user has connected. downside to this is that it
   may make the chat server look bloated with messages. i probably won't
   do this, but i'm still including it here.
-3. i might add some testing in the future
 
 # Notes on the project's conception
 

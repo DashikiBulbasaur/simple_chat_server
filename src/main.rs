@@ -7,6 +7,8 @@ use tokio::{
     sync::broadcast,
 };
 
+use chrono::{Local, Timelike};
+
 #[tokio::main]
 async fn main() -> io::Result<()> {
     let listener = TcpListener::bind("127.0.0.1:8080").await?;
@@ -36,7 +38,14 @@ async fn main() -> io::Result<()> {
         // print to server which users connected
         let mut user_id = "user".to_owned();
         user_id.push_str(&number.to_string());
-        println!("{} connected", &user_id);
+        let now = Local::now();
+        println!(
+            "[{}:{}:{}] {} connected",
+            now.hour(),
+            now.minute(),
+            now.second(),
+            &user_id
+        );
 
         // spawn a thread everytime a different connection is open. without this, tasks are
         // blocked, single threaded, and queued. aka network is still blocked
@@ -72,7 +81,13 @@ async fn main() -> io::Result<()> {
                             break;
                         }
 
-                        line = user_id.clone() + ": " + &line;
+                        let now = Local::now();
+                        let (hour, minute, second) =
+                            (now.hour(), now.minute(), now.second());
+
+                        let military_time = format!("[{hour}:{minute}:{second}] ");
+
+                        line = military_time + &user_id + ": " + &line;
                         tx.send((line.clone(), addr)).unwrap();
                     }
                     // the part that receives msgs from the network and prints them
@@ -82,7 +97,7 @@ async fn main() -> io::Result<()> {
                         if addr != other_addr {
                             writer.write_all(msg.as_bytes()).await.unwrap();
                         } else {
-                            let mut user_sees_their_msg: String = "(you) ".to_owned();
+                            let mut user_sees_their_msg: String = "*".to_owned();
                             user_sees_their_msg.push_str(&msg);
                             writer.write_all(user_sees_their_msg.as_bytes()).await.unwrap();
                         }
